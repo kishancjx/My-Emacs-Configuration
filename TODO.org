@@ -1,0 +1,117 @@
+* Stuffs I want in my configuration
+
+** TODO *BEACON* (it helps in seeing the cursor while scrolling fast by glowing)
+
+** TODO *Focus Mode* (it focus on the whatever block we are and dims the other colors) can be usefull for tutorials
+
+** TODO *Rainbow Mode* (for highlighting the hex values)
+
+** TODO *Rainbow Delimitter* (for the rainbow brackets)
+
+** TODO *Vterm* (Terminal EMulator)
+
+** TODO *VtermToggle* (Toggles Vterm)
+
+** TODO *All the Icons* 
+
+** TODO *DOOM-modeline*
+
+** TODO *ORG-Auto-Tangle*
+
+** TODO *Vertico & Consult* Ivy like
+
+** TODO *Company* autocomplete
+
+** TODO *Marginalia* show what things do in minibuffer
+
+** TODO *Projectile* Used for managing project
+
+** TODO *DashBoard* have a custom Dashboard
+
+** TODO *Perspective* have different workspaces like tiling window manager
+
+** TODO *NATIVE COMPILE* Set it up,, because it is not a package
+
+** TODO *Garbage Collection* it frees up variable
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+** TODO
+
+ 

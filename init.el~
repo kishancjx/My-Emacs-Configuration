@@ -1,0 +1,22 @@
+;;Loading my Org file to be used as config file
+(org-babel-load-file
+ (expand-file-name
+  "README.org"
+  user-emacs-directory))
+(put 'upcase-region 'disabled nil)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("7fd721e118f3fbcb40128878e46e623d27082ddb5d00a9bc9b05e0ece24dd296" "bbc6416c0c66a67d767bc68de5b1e407122c6a3b9644951f07a514de8eb62abb" "0889462ce020545b7a2eff2b094a376d918c175c139b429fb0161794fa6ab0cc" default))
+ '(package-selected-packages nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-block ((t (:background "#000000" :extend t))))
+ '(org-block-begin-line ((t (:foreground "#ff8700" :background "#000000" :extend t))))
+ '(org-block-end-line ((t (:foreground "#ff8700" :background "#000000" :extend t)))))

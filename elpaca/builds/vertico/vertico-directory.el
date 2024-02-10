@@ -1,0 +1,1 @@
+/home/kishancjx/.emacs.d/elpaca/repos/vertico/extensions/vertico-directory.el
