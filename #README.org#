@@ -3,7 +3,6 @@
 #+DESCRIPTION: My personal Emacs Config
 #+OPTIONS: toc:4
 
-
 * *TABLE OF CONTENTS* :toc:
 - [[#loading-essential-stuff][LOADING ESSENTIAL STUFF]]
   - [[#elpaca-package-manager][Elpaca Package Manager]]

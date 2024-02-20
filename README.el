@@ -65,29 +65,12 @@
 ;; Don't install anything. Defer execution of BODY
 ;;(elpaca nil (message "Installing Done"))
 
-(use-package evil
-  :init      ;; tweak evil's configuration before loading it
-  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-  (setq evil-want-keybinding nil)
-  (setq evil-vsplit-window-right t)
-  (setq evil-split-window-below t)
-  (evil-mode))
-(use-package evil-collection
-  :after evil
-  :config
-  (setq evil-collection-mode-list '(dashboard dired ibuffer))
-  :init (evil-collection-init))
-(use-package evil-tutor)
-
 (use-package general
     :config
-    (general-evil-setup)
-    ;; set up 'SPC' as the global leader key
     (general-create-definer cjx/leader-keys
-      :states '(normal insert visual emacs)
-  :keymaps 'override
-  :prefix "SPC" ;; set leader
-  :global-prefix "M-SPC") ;; access leader in insert mode
+    :keymaps 'override
+    :prefix "S-SPC" ;; set leader
+    ) 
 
 
 ;; Used for switching Buffers
@@ -215,6 +198,12 @@
 	which-key-max-description-length 25
 	which-key-allow-imprecise-window-fit t
 	which-key-separator " -> " ))
+
+(use-package company
+  :ensure t
+  :config
+  (setq company-idle-delay 0
+        company-minimum-prefix-length 1))
 
 ;;Configuring Vertico
 (use-package vertico
@@ -404,10 +393,42 @@
 (drag-stuff-global-mode 1)
 (drag-stuff-define-keys))
 
-(use-package elpy
-:ensure t
-:init
-(elpy-enable))
+;; This thing below helps to navigate to whatever the function defenition is
+;; by which we can learn elisp somewhat easily
+(use-package elisp-slime-nav
+  :ensure t
+  :config (elisp-slime-nav-mode))
+
+;; (use-package eglot
+;; :ensure t
+;; :demand t
+;; :bind (:map eglot-mode-map
+;; 	    ("<f6>" . eglot-format-buffer)
+;; 	    ("C-c a" . eglot-code-actions)
+;; 	    ("C-c d" . eldoc)
+;; 	    ("C-c r" . eglot-rename))
+;; :config
+;; (setq eglot-ignored-server-capabilities '(:inlayHintProvider)))
+
+;;   ;; Rust Mode
+;;   (use-package rust-mode
+;;     :ensure t)
+
+
+;;   ;; Rust TS (treesitter Mode)
+;;   (use-package rust-ts-mode
+;;   :ensure t
+;;   :after (eglot)
+;;   :hook ((rust-ts-mode . eglot-ensure)
+;;          (rust-ts-mode . company-tng-mode)
+;;          (rust-ts-mode . (lambda ()
+;;                 (eglot-inlay-hints-mode -1))))
+;;   :config
+;;   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
+;;   (add-to-list 'eglot-server-programs '(rust-ts-mode . ("rust-analyzer"))))
+;; ;; The Above code will turn on rust ts mode for any
+;; ;; files with .rs and also enable elgot (its
+;; ;;something like a lsp
 
 (use-package magit
 :ensure t)
