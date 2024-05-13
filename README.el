@@ -65,6 +65,10 @@
 ;; Don't install anything. Defer execution of BODY
 ;;(elpaca nil (message "Installing Done"))
 
+(global-set-key "" 'undo) ;;Setting ctrl-z for the undo 
+(global-set-key [33554458] 'undo-redo) ;;Setting ctrl-shift-z for the redo
+(global-set-key "\357" 'other-window) ;; setting alt-o for next window
+
 (use-package general
     :config
     (general-create-definer cjx/leader-keys
@@ -154,7 +158,9 @@
 (tool-bar-mode -1) ;;This Will disable the Tool bar
 (toggle-scroll-bar -1) ;;This will disable the scrollbar
 
-
+(use-package beacon
+  :ensure t
+  :config (beacon-mode 1))
 
 (use-package toc-org
     :commands toc-org-enable
@@ -164,23 +170,31 @@
 (use-package org-bullets)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
-(defvar background-color "#000000")
-(defvar foreground-color "#ff8700")
+(custom-set-faces
+ '(org-block ((t (:inherit shadow :extend t :background "black" :foreground "#14a2ff"))))
+'(org-block-begin-line ((t (:inherit org-meta-line :extend t :background "black" :foreground "orange" :slant italic))))
+'(org-block-end-line ((t (:inherit org-block-begin-line :extend t :background "black" :foreground "orange" :slant italic)))))
 
-
-   (custom-set-faces
- `(org-block-begin-line
-    ((t ( :foreground ,foreground-color  :background ,background-color :extend t))))
-  `(org-block
-    ((t (:background ,background-color :extend t))))
-  `(org-block-end-line
-    ((t ( :foreground ,foreground-color :background ,background-color :extend t))))
-  )
+(dolist (face '((org-level-1 . 1.3)
+                (org-level-2 . 1.15)
+                (org-level-3 . 1.05)
+                (org-level-4 . 1.05)
+                (org-level-5 . 1.05)
+                (org-level-6 . 1.05)
+                (org-level-7 . 1.05)
+                (org-level-8 . 1.05)))
+  (set-face-attribute (car face) nil  :weight 'medium :height (cdr face)))
 
 (use-package org-auto-tangle
 :defer t
 :hook (org-mode . org-auto-tangle-mode)
 :config (setq org-auto-tangle-default t))
+
+(org-babel-do-load-languages
+'org-babel-load-languages
+'(
+  (C . t)  ; provide C, C++, and D
+  ))
 
 (use-package which-key
   :init
@@ -199,11 +213,41 @@
 	which-key-allow-imprecise-window-fit t
 	which-key-separator " -> " ))
 
+(use-package lsp-mode
+   :ensure t)
+;; Installing Other Essentials for lsp    
+   (use-package lsp-treemacs
+     :ensure t)
+   (use-package yasnippet
+     :ensure t)
+   (use-package helm-lsp :ensure t)
+   (use-package hydra :ensure t)
+   (use-package flycheck :ensure t)
+   (use-package avy :ensure t)
+   (use-package helm-xref :ensure t)
+   (use-package dap-mode :ensure t)
+(use-package lsp-ui)
+
+(add-hook 'c-mode-hook 'lsp)
+(add-hook 'c++-mode-hook 'lsp)
+
+(setq gc-cons-threshold (* 100 1024 1024)
+      read-process-output-max (* 1024 1024)
+      treemacs-space-between-root-nodes nil
+      company-idle-delay 0.0
+      company-minimum-prefix-length 1
+      lsp-idle-delay 0.1)  ;; clangd is fast
+
+(with-eval-after-load 'lsp-mode
+  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
+  (yas-global-mode))
+
 (use-package company
   :ensure t
   :config
   (setq company-idle-delay 0
         company-minimum-prefix-length 1))
+(use-package company-box)
 
 ;;Configuring Vertico
 (use-package vertico
@@ -399,6 +443,34 @@
   :ensure t
   :config (elisp-slime-nav-mode))
 
+;;RJSX MODE
+(use-package rjsx-mode
+  :ensure t
+  :mode "\\.js\\'")
+
+
+;;TIDE
+(defun setup-tide-mode()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-syntax-automatically '(save mode-enabled))
+  (tide-hl-identifier-mode +1)
+  (company-mode +1)
+  (company-box-mode +1))
+
+(use-package tide
+  :ensure t
+  :after (rjsx-mode company flycheck)
+  :hook (rjsx-mode . setup-tide-mode))
+
+
+;;Preittier
+(use-package prettier-js
+  :ensure t
+  :after (rjsx-mode)
+  :hook (rjsx-mode . prettier-js-mode))
+
 ;; (use-package eglot
 ;; :ensure t
 ;; :demand t
@@ -432,3 +504,5 @@
 
 (use-package magit
 :ensure t)
+
+(electric-pair-mode 1)

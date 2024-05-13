@@ -5,8 +5,8 @@
 
 
 * *TABLE OF CONTENTS* :toc:
-- [[#loading-essential-stuff][LOADING ESSENTIAL STUFF]]
-  - [[#elpaca-package-manager][Elpaca Package Manager]]
+- [[#elpaca-package-manager][Elpaca Package Manager]]
+- [[#personal-keybindings][Personal Keybindings]]
 - [[#general-keybindings][General Keybindings]]
 - [[#keychords][KeyChords]]
 - [[#gui-graphical-user-interface-tweaks][GUI (GRAPHICAL USER INTERFACE) TWEAKS]]
@@ -17,13 +17,18 @@
   - [[#all-the-icons][All the icons]]
   - [[#linenumbers-and-wordwrap][LineNumbers and WordWrap]]
   - [[#disable-scrollbarmenubartoolbarstartup-screen][Disable Scrollbar/MenuBar/ToolBar/Startup Screen]]
-  - [[#modeline][Modeline]]
+  - [[#beacon][Beacon]]
 - [[#org-mode][ORG MODE]]
   - [[#enabling-table-of-contents][Enabling Table of Contents]]
   - [[#enabling-org-bullets][Enabling Org Bullets]]
   - [[#enabling-code-blocks-background][Enabling Code Blocks Background]]
+  - [[#heading-font-size][Heading Font Size]]
   - [[#auto-tangle][Auto Tangle]]
+  - [[#org-mode-languages][Org mode Languages]]
 - [[#which-key][WHICH-KEY]]
+- [[#lsp-setup][LSP setup]]
+  - [[#lsp-mode][Lsp-mode]]
+  - [[#c-and-c-lsp][C and C++ Lsp]]
 - [[#completion-systems][Completion Systems]]
   - [[#company-mode][Company Mode]]
   - [[#vertico][Vertico]]
@@ -33,15 +38,15 @@
 - [[#dragging-mode][Dragging Mode]]
 - [[#development-tools][Development Tools]]
   - [[#learning-emacs][Learning EMACS]]
+  - [[#javascript-tools][JavaScript Tools:]]
   - [[#pythons-tools][Python's Tools:]]
   - [[#eglot-its-something-like-a-lsp][Eglot (its something like a LSP)]]
   - [[#rusts-tools][Rust's Tools:]]
   - [[#magit-git-integration-in-emacs][Magit (git integration in emacs)]]
 - [[#my-custom-stuff][My Custom Stuff]]
+  - [[#electric-pair-mode][Electric Pair Mode]]
 
-* LOADING ESSENTIAL STUFF
-
-** Elpaca Package Manager
+* Elpaca Package Manager
   This will install and setup the elpaca package manager.
   
 #+begin_src emacs-lisp
@@ -113,6 +118,13 @@
   ;;(elpaca nil (message "Installing Done"))
   
 
+#+end_src
+
+* Personal Keybindings
+#+begin_src emacs-lisp
+  (global-set-key "" 'undo) ;;Setting ctrl-z for the undo 
+  (global-set-key [33554458] 'undo-redo) ;;Setting ctrl-shift-z for the redo
+  (global-set-key "\357" 'other-window) ;; setting alt-o for next window
 #+end_src
 
 * General Keybindings
@@ -256,10 +268,12 @@ colors the strings that represents any color
   
 #+end_src
 
-** Modeline
+** Beacon
 #+begin_src emacs-lisp
+  (use-package beacon
+    :ensure t
+    :config (beacon-mode 1))
 
-  
 
 #+end_src
 
@@ -283,26 +297,39 @@ Org-bullets gives us attractive bullets rather than asterisks.
 ** Enabling Code Blocks Background
 #+begin_src emacs-lisp
 
-(defvar background-color "#000000")
-(defvar foreground-color "#ff8700")
+  (custom-set-faces
+  '(org-block ((t (:inherit shadow :extend t :background "black" :foreground "#14a2ff"))))
+ '(org-block-begin-line ((t (:inherit org-meta-line :extend t :background "black" :foreground "orange" :slant italic))))
+ '(org-block-end-line ((t (:inherit org-block-begin-line :extend t :background "black" :foreground "orange" :slant italic)))))
 
-
-   (custom-set-faces
- `(org-block-begin-line
-    ((t ( :foreground ,foreground-color  :background ,background-color :extend t))))
-  `(org-block
-    ((t (:background ,background-color :extend t))))
-  `(org-block-end-line
-    ((t ( :foreground ,foreground-color :background ,background-color :extend t))))
-  )
 #+end_src
-
+** Heading Font Size
+#+begin_src emacs-lisp
+  (dolist (face '((org-level-1 . 1.3)
+                  (org-level-2 . 1.15)
+                  (org-level-3 . 1.05)
+                  (org-level-4 . 1.05)
+                  (org-level-5 . 1.05)
+                  (org-level-6 . 1.05)
+                  (org-level-7 . 1.05)
+                  (org-level-8 . 1.05)))
+    (set-face-attribute (car face) nil  :weight 'medium :height (cdr face)))
+#+end_src
 ** Auto Tangle
 #+begin_src emacs-lisp
     (use-package org-auto-tangle
     :defer t
     :hook (org-mode . org-auto-tangle-mode)
     :config (setq org-auto-tangle-default t))
+#+end_src
+
+** Org mode Languages
+#+begin_src emacs-lisp
+    (org-babel-do-load-languages
+   'org-babel-load-languages
+   '(
+     (C . t)  ; provide C, C++, and D
+     ))
 #+end_src
 * WHICH-KEY
 This Shows which key does what.
@@ -327,6 +354,44 @@ This Shows which key does what.
   
 #+end_src
 
+* LSP setup
+** Lsp-mode
+#+begin_src emacs-lisp
+   (use-package lsp-mode
+     :ensure t)
+  ;; Installing Other Essentials for lsp    
+     (use-package lsp-treemacs
+       :ensure t)
+     (use-package yasnippet
+       :ensure t)
+     (use-package helm-lsp :ensure t)
+     (use-package hydra :ensure t)
+     (use-package flycheck :ensure t)
+     (use-package avy :ensure t)
+     (use-package helm-xref :ensure t)
+     (use-package dap-mode :ensure t)
+  (use-package lsp-ui)
+#+end_src
+
+** C and C++ Lsp
+#+begin_src emacs-lisp
+
+      
+      (add-hook 'c-mode-hook 'lsp)
+      (add-hook 'c++-mode-hook 'lsp)
+
+      (setq gc-cons-threshold (* 100 1024 1024)
+            read-process-output-max (* 1024 1024)
+            treemacs-space-between-root-nodes nil
+            company-idle-delay 0.0
+            company-minimum-prefix-length 1
+            lsp-idle-delay 0.1)  ;; clangd is fast
+
+      (with-eval-after-load 'lsp-mode
+        (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
+        (yas-global-mode))
+
+#+end_src
 * Completion Systems
 
 ** Company Mode
@@ -337,7 +402,7 @@ This is helpful for providing auto complete
     :config
     (setq company-idle-delay 0
           company-minimum-prefix-length 1))
-  
+  (use-package company-box)
 
 #+end_src
 
@@ -570,6 +635,38 @@ Helpfull for dragging a selection up, down,left right
 
 #+end_src
 
+** JavaScript Tools:
+#+begin_src emacs-lisp
+        ;;RJSX MODE
+        (use-package rjsx-mode
+          :ensure t
+          :mode "\\.js\\'")
+
+
+        ;;TIDE
+        (defun setup-tide-mode()
+          (interactive)
+          (tide-setup)
+          (flycheck-mode +1)
+          (setq flycheck-syntax-automatically '(save mode-enabled))
+          (tide-hl-identifier-mode +1)
+          (company-mode +1)
+          (company-box-mode +1))
+
+        (use-package tide
+          :ensure t
+          :after (rjsx-mode company flycheck)
+          :hook (rjsx-mode . setup-tide-mode))
+
+
+        ;;Preittier
+        (use-package prettier-js
+          :ensure t
+          :after (rjsx-mode)
+          :hook (rjsx-mode . prettier-js-mode))
+
+#+end_src
+
 ** Python's Tools:
 ** Eglot (its something like a LSP)
 #+begin_src emacs-lisp
@@ -619,3 +716,9 @@ Helpfull for dragging a selection up, down,left right
 
 
 * My Custom Stuff
+** Electric Pair Mode
+Helps in Generating pair of Brackets etc..
+
+#+begin_src emacs-lisp
+  (electric-pair-mode 1)
+ #+end_src

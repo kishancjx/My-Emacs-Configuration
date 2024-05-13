@@ -1,0 +1,1 @@
+/home/kishancjx/.emacs.d/elpaca/repos/f/f-shortdoc.el

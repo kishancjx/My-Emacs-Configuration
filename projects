@@ -1,0 +1,6 @@
+;;; -*- lisp-data -*-
+(("~/.emacs.d/")
+ ("~/development/")
+ ("/mnt/hdd250/CODES/webdevlearn/amazonclone/Amazon-Clone/")
+ ("~/.config/qtile/")
+ ("/home/kishancjx/.emacs.d/"))

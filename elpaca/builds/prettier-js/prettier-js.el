@@ -1,0 +1,1 @@
+/home/kishancjx/.emacs.d/elpaca/repos/prettier-emacs/prettier-js.el
